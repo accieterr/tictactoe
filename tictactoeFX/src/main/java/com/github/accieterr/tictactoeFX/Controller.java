@@ -53,8 +53,8 @@ public class Controller {
 		else
 		{
 			ImageView y = new ImageView(new Image("/circle.png"));
-			y.setFitHeight(65);
-		    y.setFitWidth(65);
+			y.setFitHeight(60);
+		    y.setFitWidth(60);
 		    y.setPreserveRatio(true);
 		    return y;
 		}
@@ -72,12 +72,72 @@ public class Controller {
 		//update symbolGrid and values of turn and coordinates
 		int x = coords.getKey();
 		int y = coords.getValue();
-		if(turn%2==1) symbolGrid[x][y] = "X";
-		else symbolGrid[x][y] = "O";
+		String currSymbol;
+		if(turn%2==1) 
+		{
+			symbolGrid[x][y] = "X";
+			currSymbol = "X";
+		}
+		else 
+		{
+			symbolGrid[x][y] = "O";
+			currSymbol = "O";
+		}
+		
+		if(checkIfWon(currSymbol)) 
+		{
+			System.out.println("Player " + (turn%2==1 ? "1" : "2") + " won!"); //filler for game won behavior
+		}
+		
 		turn++;
-		
-		
-		
+	}
+	
+	private boolean checkIfWon(String check)
+	{
+		return checkDiagonal(check) || checkHorizontal(check) || checkVertical(check);
+	}
+	
+	private boolean checkDiagonal(String check)
+	{
+		for(int i=0;i<3;i++)
+			if(!symbolGrid[i][i].equals(check)) return false;
+		return true;
+	}
+	
+	private boolean checkHorizontal(String check)
+	{
+		for(int i=0;i<3;i++)
+		{
+			boolean rowIsGood = true;
+			for(int j=0;j<3;j++)
+			{
+				if(!symbolGrid[i][j].equals(check)) 
+				{
+					rowIsGood = false;
+					break;
+				}
+			}
+			if(rowIsGood) return true;
+		}
+		return false;
+	}
+	
+	private boolean checkVertical(String check)
+	{
+		for(int i=0;i<3;i++)
+		{
+			boolean rowIsGood = true;
+			for(int j=0;j<3;j++)
+			{
+				if(!symbolGrid[j][i].equals(check)) 
+				{
+					rowIsGood = false;
+					break;
+				}
+			}
+			if(rowIsGood) return true;
+		}
+		return false;
 	}
 	
 }
